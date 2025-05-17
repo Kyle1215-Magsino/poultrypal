@@ -1,30 +1,31 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view/>
+  <v-app>
+    <!-- Show sidebar only when not on login/signup page -->
+    <Sidebar v-if="!isLoginPage" />
+
+    <!-- Main content -->
+    <v-main app>
+      <router-view />
+    </v-main>
+  </v-app>
 </template>
 
+<script>
+import Sidebar from './components/Sidebar.vue'
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
+
+export default {
+  name: 'App',
+  components: { Sidebar },
+  setup() {
+    const route = useRoute()
+    const isLoginPage = computed(() => route.name === 'LoginSignup' || route.path === '/')
+    return { isLoginPage }
+  }
+}
+</script>
+
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-nav {
-  padding: 30px;
-}
-
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-nav a.router-link-exact-active {
-  color: #42b983;
-}
+/* Global styles here if needed */
 </style>
